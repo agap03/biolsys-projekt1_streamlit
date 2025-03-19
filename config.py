@@ -5,7 +5,7 @@ import numpy as np
 # -------------------
 # PARAMETRY POPULACJI
 # -------------------
-N = 50           # liczba osobników w populacji
+N = 100           # liczba osobników w populacji
 n = 2            # wymiar przestrzeni fenotypowej
 
 # --------------------
@@ -18,17 +18,20 @@ xi = 0.1         # odchylenie standardowe w rozkładzie normalnym mutacji
 # --------------------
 # PARAMETRY SELEKCJI
 # --------------------
-sigma = 0.2      # parametr w funkcji fitness (kontroluje siłę selekcji)
-threshold = 0.1  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
+sigma = 0.4      # parametr w funkcji fitness (kontroluje siłę selekcji)
+threshold = 0.05  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
+hibernation_thresh=0.1
+h_time=10 # czas hibernacji
+mu_h=0.3 #prawdopodobieństwo hibernacji, gdy w dobrym progu
 
 # --------------------
 # PARAMETRY ŚRODOWISKA
 # --------------------
 # Początkowe alpha(t)
 alpha0 = np.array([0.0, 0.0])  
-# Wektor kierunkowej zmiany c
-c = np.array([0.01, 0.01])     
-delta = 0.01    # odchylenie standardowe dla fluktuacji
+# amplituda i okres sinusoidalnej zmiany optymalnego fenotypu
+A=0.5
+B=0.1
 max_generations = 100  # liczba pokoleń do zasymulowania
 
 # ----------------------

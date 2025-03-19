@@ -21,4 +21,5 @@ def mutate_population(population, mu, mu_c, xi):
     Mutuje całą populację (lista osobników).
     """
     for ind in population.get_individuals():
-        mutate_individual(ind, mu, mu_c, xi)
+        if not ind.is_hibernated():
+            mutate_individual(ind, mu, mu_c, xi)

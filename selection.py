@@ -13,39 +13,28 @@ def fitness_function(phenotype, alpha, sigma):
     dist_sq = np.sum(diff**2)
     return np.exp(-dist_sq / (2 * sigma**2))
 
-def proportional_selection(population, alpha, sigma, N):
-    """
-    Model proporcjonalny: 
-      - P(rozmnożenia) = fitness / suma fitnessów
-      - Generujemy nową populację wielkości N.
-    """
-    individuals = population.get_individuals()
-    fitnesses = [fitness_function(ind.get_phenotype(), alpha, sigma) for ind in individuals]
-    total_fitness = sum(fitnesses)
-    if total_fitness == 0:
-        # Jeśli całkowite fitness jest 0, to każdy osobnik dostaje równą szansę
-        probabilities = [1.0 / len(individuals)] * len(individuals)
-    else:
-        probabilities = [f / total_fitness for f in fitnesses]
 
-    new_individuals = []
-    for _ in range(N):
-        chosen_idx = np.random.choice(range(len(individuals)), p=probabilities)
-        new_individuals.append(individuals[chosen_idx])
 
-    population.set_individuals(new_individuals)
-
-def threshold_selection(population, alpha, sigma, threshold):
+def threshold_selection(population, alpha, sigma, threshold, hibernation_thresh, h_time, mu_h):
     """
     Model progowy:
       - Eliminujemy osobniki, których fitness < threshold.
       - Pozostałe przechodzą do kolejnej fazy (o ile nie przekroczymy N).
       - Jeśli liczba ocalałych > N, wtedy dodatkowa redukcja.
+
+      osobniki, których (treshhold < fitness < hibernation_thresh) hibernują z prawdopodobieństwem mu_h
     """
     individuals = population.get_individuals()
     survivors = []
     for ind in individuals:
-        f = fitness_function(ind.get_phenotype(), alpha, sigma)
-        if f >= threshold:
+        if not ind.is_hibernated():
+            f = fitness_function(ind.get_phenotype(), alpha, sigma)
+            if f >= hibernation_thresh:
+                survivors.append(ind)
+            elif f >= threshold:
+                if np.random.rand() < mu_h:
+                    ind.hibernate(h_time)
+                survivors.append(ind)
+        else:
             survivors.append(ind)
     return survivors

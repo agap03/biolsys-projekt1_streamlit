@@ -1,6 +1,7 @@
 # reproduction.py
 
 import copy
+import numpy as np
 
 def asexual_reproduction(survivors, N):
     """
@@ -14,10 +15,23 @@ def asexual_reproduction(survivors, N):
         # Zabezpieczenie: jeśli wszyscy wymarli, inicjujemy od nowa (albo zatrzymujemy symulację).
         return []
 
+    active_survivors=[]
+    for ind in survivors:
+        if ind.is_hibernated():
+            ind.update_hibernation()
+            new_population.append(ind)
+        else:
+            active_survivors.append(ind)
+
+    if len(active_survivors)==0:
+        return new_population[:N]
+
     while len(new_population) < N:
-        parent = copy.deepcopy(survivors[0])  # np. zawsze klonuj pierwszego (do testów)
+        
+        #parent = copy.deepcopy(survivors[0])  # np. zawsze klonuj pierwszego (do testów)
         # W praktyce można klonować losowo: 
-        # parent = copy.deepcopy(np.random.choice(survivors))
+        parent = copy.deepcopy(np.random.choice(active_survivors))
         new_population.append(parent)
+
 
     return new_population[:N]  # przycinamy, gdyby było za dużo
