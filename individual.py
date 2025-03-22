@@ -10,6 +10,7 @@ class Individual:
     def __init__(self, phenotype):
         self.phenotype = phenotype
         self.hibernation = 0
+        self.just_awaken = False
 
     def get_phenotype(self):
         return self.phenotype
@@ -29,3 +30,9 @@ class Individual:
     
     def is_hibernated(self):
         return self.hibernation>0
+    
+    def is_just_awaken(self):
+        return self.just_awaken
+    
+    def update_just_awaken(self):
+        self.just_awaken=not self.just_awaken

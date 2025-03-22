@@ -3,6 +3,7 @@
 import os
 import numpy as np
 import config
+import matplotlib.pyplot as plt
 from environment import Environment
 from population import Population
 from mutation import mutate_population
@@ -18,6 +19,9 @@ def main():
     frames_dir = "frames"
     os.makedirs(frames_dir, exist_ok=True)  # tworzy folder, jeśli nie istnieje
 
+    opts=[]
+    hibernated=[]
+
     for generation in range(config.max_generations):
 
         # 1. Mutacja
@@ -26,7 +30,6 @@ def main():
 
         # 2. Selekcja
         survivors = threshold_selection(pop, env.get_optimal_phenotype(), config.sigma, config.threshold,  config.hibernation_thresh, config.h_p, config.mu_h)
-
 
         # 3. Reprodukcja
         new_pop=asexual_reproduction(survivors, config.N)
@@ -45,14 +48,39 @@ def main():
         frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
         plot_population(pop, env.get_optimal_phenotype(), generation, save_path=frame_filename, show_plot=False)
         
-        #frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
-        #plot_population(pop, env.get_optimal_phenotype(), generation, save_path=frame_filename, show_plot=False)
+        no_hib=0
+        for ind in pop.get_individuals():
+            if ind.is_hibernated():
+                no_hib+=1
 
-    print("Symulacja zakończona. Tworzenie GIF-a...")
+        hibernated.append(no_hib)
+        opts.append(env.get_optimal_phenotype()[0])
+                
+
+    print("Symulacja zakończona.")
+
+    print("Przeżyte hibernacje: ", pop.get_survived_hib(), "; Powtórzone hibernacje: ", pop.get_repeated_hib(), "; Wszystkie hibernacje: ", pop.get_total_hib(), "\n")
+
+    print("Tworzenie GIF-a...")
 
     # Tutaj wywołujemy funkcję, która połączy zapisane klatki w animację
     create_gif_from_frames(frames_dir, "simulation.gif")
     print("GIF zapisany jako simulation.gif")
+
+    print("Tworzenie wykresu z liczbą hibernacji...")
+
+    plt.figure(figsize=(5, 5))
+    plt.scatter(opts, hibernated)
+    plt.title(f"Liczba hibernacji w zależności od optimum")
+    plt.xlim(-config.A-0.5, config.A+0.5)
+    xlabels=np.linspace(-config.A, config.A, 7)
+    plt.xticks(xlabels, [f"({x:.1f}, {x:.1f})" for x in xlabels], rotation ='vertical')
+    plt.xlabel("Optimum")
+    plt.ylabel("Liczba osobników w hibernacji")
+    plt.tight_layout()
+    plt.savefig("hibernacje.png")
+
+    print("Liczba hibernacji zapisana jako hibernacje.png")
 
 def create_gif_from_frames(frames_dir, gif_filename, duration=0.2):
     """

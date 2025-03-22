@@ -30,12 +30,25 @@ def threshold_selection(population, alpha, sigma, threshold, hibernation_thresh,
     for ind in individuals:
         if not ind.is_hibernated():
             f = fitness_function(ind.get_phenotype(), alpha, sigma)
-            if f >= hibernation_thresh:
-                survivors.append(ind)
-            elif f >= threshold:
-                if np.random.rand() < mu_h:
-                    ind.hibernate(np.random.geometric(f)) # czas hibernacji z rokładu geometrycznego, zależy od fintess
-                survivors.append(ind)
+
+            if f < threshold: # jeśli za słaby fitness
+                if ind.is_just_awaken(): # jeśli dopiero się obudził, ale nie przeżył
+                    ind.update_just_awaken()
+
+            else: # jeśli przeżył (fitness wystraczający)
+                survivors.append(ind) 
+
+                if f < hibernation_thresh and np.random.rand() < mu_h: # jeśli może zahibernować
+                    ind.hibernate(np.random.geometric(f)) # czas hibernacji z rokładu geometrycznego, zależy od fintess    
+                    population.add_hib()
+
+                    if ind.is_just_awaken(): # jeśli dopiero się obudził, a znowu hibernuje
+                        population.add_repeated_hib()
+
+                if ind.is_just_awaken(): # jeśli dopiero się obudził, a przeżył
+                    ind.update_just_awaken()
+                    population.add_survived_hib()
+
         else:
             survivors.append(ind)
     return survivors

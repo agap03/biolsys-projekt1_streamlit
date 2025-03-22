@@ -17,9 +17,13 @@ def asexual_reproduction(survivors, N):
 
     active_survivors=[]
     for ind in survivors:
-        if ind.is_hibernated():
+        if ind.is_hibernated(): # jeśli w hibernacji
             ind.update_hibernation()
             new_population.append(ind)
+
+            if ind.get_hibernation()==0: # jeśli właśnie się wybudził
+                ind.update_just_awaken()
+
         else:
             active_survivors.append(ind)
 
