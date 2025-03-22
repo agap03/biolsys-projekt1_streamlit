@@ -15,7 +15,8 @@ def fitness_function(phenotype, alpha, sigma):
 
 
 
-def threshold_selection(population, alpha, sigma, threshold, hibernation_thresh, h_time, mu_h):
+
+def threshold_selection(population, alpha, sigma, threshold, hibernation_thresh, h_p, mu_h):
     """
     Model progowy:
       - Eliminujemy osobniki, których fitness < threshold.
@@ -33,7 +34,7 @@ def threshold_selection(population, alpha, sigma, threshold, hibernation_thresh,
                 survivors.append(ind)
             elif f >= threshold:
                 if np.random.rand() < mu_h:
-                    ind.hibernate(h_time)
+                    ind.hibernate(np.random.geometric(f)) # czas hibernacji z rokładu geometrycznego, zależy od fintess
                 survivors.append(ind)
         else:
             survivors.append(ind)

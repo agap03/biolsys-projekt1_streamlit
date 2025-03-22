@@ -28,8 +28,7 @@ def asexual_reproduction(survivors, N):
 
     while len(new_population) < N:
         
-        #parent = copy.deepcopy(survivors[0])  # np. zawsze klonuj pierwszego (do testów)
-        # W praktyce można klonować losowo: 
+        # klonowanie losowe
         parent = copy.deepcopy(np.random.choice(active_survivors))
         new_population.append(parent)
 

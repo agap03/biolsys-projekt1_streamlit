@@ -18,11 +18,11 @@ xi = 0.1         # odchylenie standardowe w rozkładzie normalnym mutacji
 # --------------------
 # PARAMETRY SELEKCJI
 # --------------------
-sigma = 0.4      # parametr w funkcji fitness (kontroluje siłę selekcji)
-threshold = 0.05  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
-hibernation_thresh=0.1
-h_time=10 # czas hibernacji
-mu_h=0.3 #prawdopodobieństwo hibernacji, gdy w dobrym progu
+sigma = 0.2      # parametr w funkcji fitness (kontroluje siłę selekcji)
+threshold = 0.1  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
+hibernation_thresh=0.2
+h_p=0.15 # prawdopodobieństwo obudzenia się z hibernacji przy jednym pokoleniu (do rozkładu geometrycznego losowania długości hibernacji)
+mu_h=0.3 # prawdopodobieństwo hibernacji, gdy w dobrym progu
 
 # --------------------
 # PARAMETRY ŚRODOWISKA

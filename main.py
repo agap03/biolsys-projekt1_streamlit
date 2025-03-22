@@ -25,7 +25,7 @@ def main():
 
 
         # 2. Selekcja
-        survivors = threshold_selection(pop, env.get_optimal_phenotype(), config.sigma, config.threshold,  config.hibernation_thresh, config.h_time, config.mu_h)
+        survivors = threshold_selection(pop, env.get_optimal_phenotype(), config.sigma, config.threshold,  config.hibernation_thresh, config.h_p, config.mu_h)
 
 
         # 3. Reprodukcja
