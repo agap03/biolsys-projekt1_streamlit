@@ -1,5 +1,7 @@
 venv/
 frames/
+simulation.gif/
+hibernacje.png/
 __pycache__/
 *.pyc
 *.pyo
