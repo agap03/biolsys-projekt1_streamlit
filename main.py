@@ -70,7 +70,7 @@ def main():
     print("Tworzenie wykresu z liczbą hibernacji...")
 
     plt.figure(figsize=(5, 5))
-    plt.scatter(opts, hibernated)
+    plt.scatter(opts, hibernated, alpha=0.7)
     plt.title(f"Liczba hibernacji w zależności od optimum")
     plt.xlim(-config.A-0.5, config.A+0.5)
     xlabels=np.linspace(-config.A, config.A, 7)
